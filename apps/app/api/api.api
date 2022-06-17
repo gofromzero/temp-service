@@ -6,7 +6,20 @@ type Response {
 	Message string `json:"message"`
 }
 
+@server(
+	group: login
+)
 service api-api {
 	@handler ApiHandler
 	get /from/:name(Request) returns (Response)
+}
+
+@server(
+	jwt: Auth
+	middleware: AuthMiddleware
+	group: user
+)
+service api-api {
+	@handler UserInfo
+	get /user/info(Request) returns (Response)
 }

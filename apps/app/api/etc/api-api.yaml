@@ -1,3 +1,35 @@
 Name: api-api
 Host: 0.0.0.0
 Port: 8888
+#CertFile:
+#KeyFile:
+Verbose: true
+MaxConns: 10000
+MaxBytes: 1048576
+# milliseconds
+Timeout: 3000
+CpuThreshold: 900 # [0:1000]
+  Signature:#
+Log:
+  ServiceName: api-service
+  Mode: file # console,file,volume
+  Encoding: json            # json,plain
+  #  TimeFormat:
+  Path: logs
+  Level: info          # info,error,severe
+  Compress: true
+  KeepDays: 30
+  StackCooldownMillis: 100
+Mode: dev      # dev|test|rt|pre|pro
+#MetricsUrl:
+#Prometheus:
+#Telemetry:
+Mysql:
+  DataSource: $user:$password@tcp($url)/$db?charset=utf8mb4&parseTime=true&loc=Asia%2FShanghai
+CacheRedis:
+  - Host: $host
+    Pass: $pass
+    Type: node
+Auth:
+  AccessSecret: $AccessSecret
+  AccessExpire: $AccessExpire

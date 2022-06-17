@@ -4,7 +4,10 @@ import (
 	"flag"
 	"fmt"
 
-	{{.imports}}
+	"temp-service/apps/user/rpc/internal/config"
+	"temp-service/apps/user/rpc/internal/server"
+	"temp-service/apps/user/rpc/internal/svc"
+	"temp-service/apps/user/rpc/rpc"
 
 	"github.com/zeromicro/go-zero/core/conf"
 	"github.com/zeromicro/go-zero/core/service"
@@ -13,7 +16,7 @@ import (
 	"google.golang.org/grpc/reflection"
 )
 
-var configFile = flag.String("f", "etc/{{.serviceName}}-pro.yaml", "the config file")
+var configFile = flag.String("f", "etc/rpc.yaml", "the config file")
 
 func main() {
 	flag.Parse()
@@ -21,10 +24,10 @@ func main() {
 	var c config.Config
 	conf.MustLoad(*configFile, &c)
 	ctx := svc.NewServiceContext(c)
-	svr := server.New{{.serviceNew}}Server(ctx)
+	svr := server.NewRpcServer(ctx)
 
 	s := zrpc.MustNewServer(c.RpcServerConf, func(grpcServer *grpc.Server) {
-		{{.pkg}}.Register{{.service}}Server(grpcServer, svr)
+		rpc.RegisterRpcServer(grpcServer, svr)
 
 		if c.Mode == service.DevMode || c.Mode == service.TestMode {
 			reflection.Register(grpcServer)

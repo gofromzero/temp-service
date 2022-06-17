@@ -4,6 +4,8 @@ package handler
 import (
 	"net/http"
 
+	login "temp-service/apps/app/api/internal/handler/login"
+	user "temp-service/apps/app/api/internal/handler/user"
 	"temp-service/apps/app/api/internal/svc"
 
 	"github.com/zeromicro/go-zero/rest"
@@ -15,8 +17,22 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 			{
 				Method:  http.MethodGet,
 				Path:    "/from/:name",
-				Handler: ApiHandler(serverCtx),
+				Handler: login.ApiHandler(serverCtx),
 			},
 		},
+	)
+
+	server.AddRoutes(
+		rest.WithMiddlewares(
+			[]rest.Middleware{serverCtx.AuthMiddleware},
+			[]rest.Route{
+				{
+					Method:  http.MethodGet,
+					Path:    "/user/info",
+					Handler: user.UserInfoHandler(serverCtx),
+				},
+			}...,
+		),
+		rest.WithJwt(serverCtx.Config.Auth.AccessSecret),
 	)
 }
