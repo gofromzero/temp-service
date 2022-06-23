@@ -3,7 +3,7 @@ ListenOn: 127.0.0.1:8080
 Etcd:
   Hosts:
     - 127.0.0.1:2379
-  Key: user.rpc
+  Key: wechat.rpc
 Auth: false
 StrictControl: false
 # setting 0 means no timeout
@@ -23,4 +23,4 @@ Log:
   KeepDays: 30
   StackCooldownMillis: 100
 Mysql:
-  DataSource: $user:$password@tcp($url)/$db?charset=utf8mb4&parseTime=true&loc=Asia%2FShanghai
+  DataSource: root:123456@tcp(127.0.0.1:3306)/test?charset=utf8mb4&parseTime=true&loc=Asia%2FShanghai
